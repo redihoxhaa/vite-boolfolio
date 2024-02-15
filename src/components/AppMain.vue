@@ -2,12 +2,14 @@
 // IMPORTS
 
 import ProjectCard from './ProjectCard.vue';
+import PageScroller from './PageScroller.vue';
 
 // /IMPORTS
 
 export default {
   props: ['projects'],
-  components: { ProjectCard },
+  components: { ProjectCard, PageScroller },
+  emits: ['prevPage', 'nextPage'],
   data() {
     return {
 
@@ -25,6 +27,7 @@ export default {
       <ProjectCard :project="project" />
     </li>
   </ul>
+  <PageScroller @prevPage="$emit('prevPage')" @nextPage="$emit('nextPage')" />
 </template>
 
 <style lang="scss" scoped>
