@@ -7,6 +7,7 @@ import axios from 'axios'
 export default {
   data() {
     return {
+      projects: [],
       baseURL: 'http://127.0.0.1:8000',
       URIs: {
         projects: '/api/projects'
@@ -17,7 +18,7 @@ export default {
   methods: {
     getProjects() {
       axios.get(this.baseURL + this.URIs.projects).then(response => {
-        console.log(response);
+        this.projects = response.data;
       })
     }
   },
@@ -28,9 +29,11 @@ export default {
 </script>
 
 <template>
-  <AppHeader />
-  <AppMain />
-  <AppFooter />
+  <div class="container">
+    <AppHeader />
+    <AppMain :projects="projects" />
+    <AppFooter />
+  </div>
 </template>
 
 <style lang="scss" scoped></style>

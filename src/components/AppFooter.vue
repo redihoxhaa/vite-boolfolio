@@ -19,7 +19,7 @@ export default {
 </script>
 
 <template>
-    <div class="text-uppercase p-5">Footer</div>
+    <p class="text-center py-5">Not made with love ©</p>
 </template>
 
 <style lang="scss" scoped>

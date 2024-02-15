@@ -19,7 +19,7 @@ export default {
 </script>
 
 <template>
-    <div class="text-uppercase p-5">Header</div>
+    <h1 class="text-uppercase text-center pt-5">Boolfolio</h1>
 </template>
 
 <style lang="scss" scoped>
