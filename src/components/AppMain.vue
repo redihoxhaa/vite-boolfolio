@@ -19,7 +19,7 @@ export default {
 </script>
 
 <template>
-  <span class="text-uppercase p-5">rieccoci</span>
+  <div class="text-uppercase p-5">Main</div>
 </template>
 
 <style lang="scss" scoped>
