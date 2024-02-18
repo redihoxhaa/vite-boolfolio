@@ -23,8 +23,12 @@ export default {
     methods: {
         getProject() {
             axios.get(this.baseURL + this.URIs.projects + '/' + this.params.slug).then(response => {
-                this.project = response.data;
-
+                if (Object.keys(response.data).length) {
+                    this.project = response.data;
+                } else {
+                    // redirect alla pagina 404
+                    this.$router.push({ name: 'not-found' })
+                }
             })
         },
     },
