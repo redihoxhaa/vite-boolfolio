@@ -1,25 +1,41 @@
 <script>
 // IMPORTS
 
-
+import axios from 'axios';
 
 // /IMPORTS
 
 export default {
-    props: ['project'],
+    props: [],
     components: {},
     data() {
         return {
-
+            project: [],
+            baseURL: 'http://127.0.0.1:8000',
+            URIs: {
+                projects: '/api/projects'
+            },
+            params: {
+                slug: this.$route.params.slug
+            }
         }
     },
-    methods: {},
-    mounted() { },
+    methods: {
+        getProject() {
+            axios.get(this.baseURL + this.URIs.projects + '/' + this.params.slug).then(response => {
+                this.project = response.data;
+
+            })
+        },
+    },
+    created() {
+        this.getProject();
+    },
 }
 </script>
 
 <template>
-    <div class="card-custom">
+    <div class="card-custom mt-5">
 
         <!-- Stauts progetto -->
         <p :class="[
@@ -37,9 +53,7 @@ export default {
         </p>
         <div class="main-content">
             <!-- Titolo progetto -->
-            <router-link :to="{ name: 'single-project', params: { slug: project.slug } }" class="nav-link heading">
-                <h3 class="title py-3">{{ project.title }}</h3>
-            </router-link>
+            <h3 class="title py-3">{{ project.title }}</h3>
 
             <!-- Data inizio progetto -->
             <p class="start-date pt-1">Project started on
@@ -81,9 +95,9 @@ export default {
 
 <style lang="scss" scoped>
 // USES
+
 @use '../assets/scss/partials/components' as *;
 @use '../assets/scss/partials/reset' as *;
-
 
 // /USES
 </style>

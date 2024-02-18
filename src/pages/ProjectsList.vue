@@ -8,9 +8,7 @@ import axios from 'axios';
 // /IMPORTS
 
 export default {
-    props: ['projects'],
     components: { ProjectCard, PageScroller },
-    emits: ['prevPage', 'nextPage'],
     data() {
         return {
             projects: [],
@@ -34,7 +32,6 @@ export default {
                 this.params.page.max_pages = response.data.last_page;
             })
         },
-
         prevPage() {
             if (this.params.page.page_number > 1) {
                 this.params.page.page_number--;
@@ -49,7 +46,7 @@ export default {
             }
         }
     },
-    mounted() {
+    created() {
         this.getProjects();
     },
 }
