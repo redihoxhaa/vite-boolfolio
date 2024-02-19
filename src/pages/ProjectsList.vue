@@ -40,7 +40,7 @@ export default {
         prevPage() {
             if (this.store.params.page.page_number > 1) {
                 this.store.params.page.page_number--;
-                this.$router.push({ name: 'projects', query: { page: this.store.params.page.page_number } });
+                this.$router.push({ name: 'projects', query: { page: this.store.params.page.page_number, key: this.store.searchKey } });
                 this.getProjects();
             }
         },
@@ -48,13 +48,14 @@ export default {
         nextPage() {
             if (this.store.params.page.page_number < this.store.params.page.max_pages) {
                 this.store.params.page.page_number++;
-                this.$router.push({ name: 'projects', query: { page: this.store.params.page.page_number } });
+                this.$router.push({ name: 'projects', query: { page: this.store.params.page.page_number, key: this.store.searchKey } });
                 this.getProjects();
             }
         }
     },
     created() {
         this.store.params.page.page_number = this.$route.query?.page ?? 1;
+        this.store.searchKey = this.$route.query.key ?? null;
         // this.$watch(
         //     () => this.$route.params,
         //     (toParams, previousParams) => {

@@ -17,6 +17,7 @@ export default {
     methods: {
         search() {
             this.$emit('searchProject');
+            this.$router.push({ name: 'projects', query: { page: 1, key: this.store.searchKey } });
         }
     },
     mounted() { },
