@@ -2,6 +2,7 @@
 // IMPORTS
 
 import axios from 'axios';
+import store from '../store';
 
 // /IMPORTS
 
@@ -10,11 +11,8 @@ export default {
     components: {},
     data() {
         return {
+            store,
             project: {},
-            baseURL: 'http://127.0.0.1:8000',
-            URIs: {
-                projects: '/api/projects'
-            },
             params: {
                 slug: this.$route.params.slug
             }
@@ -22,7 +20,7 @@ export default {
     },
     methods: {
         getProject() {
-            axios.get(this.baseURL + this.URIs.projects + '/' + this.params.slug).then(response => {
+            axios.get(this.store.baseURL + this.store.URIs.projects + '/' + this.params.slug).then(response => {
                 if (response.data.status) {
                     this.project = response.data.result;
                 } else {

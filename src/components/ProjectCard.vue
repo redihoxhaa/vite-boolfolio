@@ -14,12 +14,13 @@ export default {
         }
     },
     methods: {},
-    mounted() { },
+    mounted() {
+    },
 }
 </script>
 
 <template>
-    <div class="card-custom">
+    <div class="card-custom" v-if="Object.keys(project).length">
 
         <!-- Stauts progetto -->
         <p :class="[

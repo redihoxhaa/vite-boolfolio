@@ -4,51 +4,63 @@
 import ProjectCard from '../components/ProjectCard.vue';
 import PageScroller from '../components/PageScroller.vue';
 import axios from 'axios';
+import PostSearch from '../components/PostSearch.vue';
+import store from '../store';
 
 // /IMPORTS
 
 export default {
-    components: { ProjectCard, PageScroller },
+    components: { ProjectCard, PageScroller, PostSearch },
     data() {
         return {
+            store,
             projects: [],
-            baseURL: 'http://127.0.0.1:8000',
-            URIs: {
-                projects: '/api/projects'
-            },
-            params: {
-                page: {
-                    prefix: '?page=',
-                    page_number: 1,
-                    max_pages: ''
-                }
-            }
+            errors: [],
         }
     },
     methods: {
         getProjects() {
-            axios.get(this.baseURL + this.URIs.projects + this.params.page.prefix + this.params.page.page_number).then(response => {
+            this.errors = '';
+            axios.get(this.store.baseURL + this.store.URIs.projects + this.store.params.page.prefix + this.store.params.page.page_number, {
+                params: {
+                    key: this.store.searchKey
+                }
+            }).then(response => {
+                console.log(response);
                 this.projects = response.data.result.data;
-                this.params.page.max_pages = response.data.result.last_page;
-            })
+                this.store.params.page.max_pages = response.data.result.last_page;
+            }).catch(
+                error => {
+                    console.log(error);
+                    this.projects = [];
+                    this.errors = error.response.data.message;
+                }
+            )
         },
         prevPage() {
-            if (this.params.page.page_number > 1) {
-                this.params.page.page_number--;
-                this.$router.push({ name: 'projects', query: { page: this.params.page.page_number } });
+            if (this.store.params.page.page_number > 1) {
+                this.store.params.page.page_number--;
+                this.$router.push({ name: 'projects', query: { page: this.store.params.page.page_number } });
                 this.getProjects();
             }
         },
 
         nextPage() {
-            if (this.params.page.page_number < this.params.page.max_pages) {
-                this.params.page.page_number++;
-                this.$router.push({ name: 'projects', query: { page: this.params.page.page_number } });
+            if (this.store.params.page.page_number < this.store.params.page.max_pages) {
+                this.store.params.page.page_number++;
+                this.$router.push({ name: 'projects', query: { page: this.store.params.page.page_number } });
                 this.getProjects();
             }
         }
     },
     created() {
+        this.store.params.page.page_number = this.$route.query?.page ?? 1;
+        // this.$watch(
+        //     () => this.$route.params,
+        //     (toParams, previousParams) => {
+        //         this.params.page.page_number = this.$route.query?.page ?? 1;
+        //         this.getProjects();
+        //     }),
         this.getProjects();
     },
 }
@@ -56,6 +68,9 @@ export default {
 
 <template>
     <h3 class="pt-5 text-center">My projects</h3>
+    <PostSearch @searchProject="getProjects()" />
+
+    <div v-if="errors.length">{{ errors }}</div>
     <ul class="row g-5">
         <li class="col-12 col-md-6 col-lg-4 d-flex" v-for="project in projects">
             <ProjectCard :project="project" />
