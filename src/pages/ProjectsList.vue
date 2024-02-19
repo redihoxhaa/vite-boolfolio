@@ -23,7 +23,7 @@ export default {
             this.errors = '';
             axios.get(this.store.baseURL + this.store.URIs.projects + this.store.params.page.prefix + this.store.params.page.page_number, {
                 params: {
-                    key: this.store.searchKey
+                    key: this.store.searchKey,
                 }
             }).then(response => {
                 console.log(response);
