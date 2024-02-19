@@ -10,7 +10,7 @@ export default {
     components: {},
     data() {
         return {
-            project: [],
+            project: {},
             baseURL: 'http://127.0.0.1:8000',
             URIs: {
                 projects: '/api/projects'
@@ -23,23 +23,32 @@ export default {
     methods: {
         getProject() {
             axios.get(this.baseURL + this.URIs.projects + '/' + this.params.slug).then(response => {
-                if (Object.keys(response.data).length) {
-                    this.project = response.data;
+                if (response.data.status) {
+                    this.project = response.data.result;
                 } else {
-                    // redirect alla pagina 404
                     this.$router.push({ name: 'not-found' })
                 }
-            })
+            }).catch(
+                error => {
+                    console.log(error);
+                }
+            )
         },
     },
     created() {
+        // Da aggiungere se vogliamo post linkati
+        // this.$watch(
+        //     () => this.$route.params,
+        //     (toParams, previousParams) => {
+        //         this.getProject();
+        //     }),
         this.getProject();
     },
 }
 </script>
 
 <template>
-    <div class="card-custom mt-5">
+    <div class="card-custom mt-5" v-if="Object.keys(project).length">
 
         <!-- Stauts progetto -->
         <p :class="[

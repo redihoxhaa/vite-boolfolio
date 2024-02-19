@@ -28,13 +28,14 @@ export default {
     methods: {
         getProjects() {
             axios.get(this.baseURL + this.URIs.projects + this.params.page.prefix + this.params.page.page_number).then(response => {
-                this.projects = response.data.data;
-                this.params.page.max_pages = response.data.last_page;
+                this.projects = response.data.result.data;
+                this.params.page.max_pages = response.data.result.last_page;
             })
         },
         prevPage() {
             if (this.params.page.page_number > 1) {
                 this.params.page.page_number--;
+                this.$router.push({ name: 'projects', query: { page: this.params.page.page_number } });
                 this.getProjects();
             }
         },
@@ -42,6 +43,7 @@ export default {
         nextPage() {
             if (this.params.page.page_number < this.params.page.max_pages) {
                 this.params.page.page_number++;
+                this.$router.push({ name: 'projects', query: { page: this.params.page.page_number } });
                 this.getProjects();
             }
         }
