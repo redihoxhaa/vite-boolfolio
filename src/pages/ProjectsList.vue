@@ -56,13 +56,13 @@ export default {
     created() {
         this.store.params.page.page_number = this.$route.query?.page ?? 1;
         this.store.searchKey = this.$route.query.key ?? null;
-        // this.$watch(
-        //     () => this.$route.params,
-        //     (toParams, previousParams) => {
-        //         this.params.page.page_number = this.$route.query?.page ?? 1;
-        //         this.getProjects();
-        //     }),
-        this.getProjects();
+        this.$watch(
+            () => this.$route.params,
+            (toParams, previousParams) => {
+                this.store.params.page.page_number = this.$route.query?.page ?? 1;
+                this.getProjects();
+            }),
+            this.getProjects();
     },
 }
 </script>
